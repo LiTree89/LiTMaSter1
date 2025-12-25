@@ -7,6 +7,7 @@ import "./styles/custom.css";
 import LiveStats from './components/LiveStats';
 import RuntimeStatsWidget from './components/RuntimeStatsWidget';
 import ChatWidget from './components/ChatWidget';
+import ChartWidget from './components/ChartWidget';
 
 declare global {
   interface Window {
@@ -20,6 +21,7 @@ export default function App() {
       <NavBar />
       <LiveStats />
       <RuntimeStatsWidget />
+      <ChartWidget />
       <ChatWidget />
       <Dashboard />
     </>
