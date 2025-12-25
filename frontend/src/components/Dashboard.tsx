@@ -5,6 +5,7 @@ import MediaPlayerWidget from "./MediaPlayerWidget";
 import WalletWidget from "./WalletWidget";
 import MissionsWidget from "./MissionsWidget";
 import CopilotWidget from "./CopilotWidget";
+import YouTubeWidget from "./YouTubeWidget";
 import "../styles/tailwind.css";
 import "../styles/custom.css";
 
@@ -13,7 +14,8 @@ const initialLayout = [
   { i: "media", x: 2, y: 0, w: 4, h: 3 },
   { i: "wallet", x: 0, y: 3, w: 2, h: 2 },
   { i: "missions", x: 2, y: 3, w: 2, h: 2 },
-  { i: "copilot", x: 4, y: 3, w: 2, h: 2 }
+  { i: "copilot", x: 4, y: 3, w: 2, h: 2 },
+  { i: "youtube", x: 0, y: 5, w: 6, h: 4 }
 ];
 
 export default function Dashboard() {
@@ -35,6 +37,7 @@ export default function Dashboard() {
         <div key="wallet"><WalletWidget /></div>
         <div key="missions"><MissionsWidget /></div>
         <div key="copilot"><CopilotWidget /></div>
+        <div key="youtube"><YouTubeWidget /></div>
       </GridLayout>
       <footer className="mt-12 text-center text-xs opacity-60">Drag, drop, and customize your dashboard. More widgets coming soon!</footer>
     </div>

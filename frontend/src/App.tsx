@@ -1,5 +1,6 @@
 import React from "react";
 import Dashboard from "./components/Dashboard";
+import NavBar from "./components/NavBar";
 import "./styles/tailwind.css";
 import "./styles/custom.css";
 
@@ -10,5 +11,10 @@ declare global {
 }
 
 export default function App() {
-  return <Dashboard />;
+  return (
+    <>
+      <NavBar />
+      <Dashboard />
+    </>
+  );
 }

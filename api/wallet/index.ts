@@ -8,8 +8,8 @@ const httpTrigger = async function (context: Context, req: HttpRequest): Promise
   try {
 
     // Authenticate and check roles
-    // Type workaround: cast req as any to match expected type for authenticate
-    const { userId, roles: userRoles } = await authenticate(req as any);
+    // Use HttpRequest type for authenticate
+    const { userId, roles: userRoles } = await authenticate(req);
     if (!hasRequiredRole(["user", "admin"], userRoles)) {
       context.res = { status: 403, body: { error: 'Forbidden: Insufficient role' } };
       return;
@@ -24,7 +24,7 @@ const httpTrigger = async function (context: Context, req: HttpRequest): Promise
         parameters: [{ name: "@userId", value: userId }]
       }).fetchAll();
 
-      const balance = resources.reduce((sum: number, txn: any) => {
+      const balance = resources.reduce((sum: number, txn: { type: string; amount: number }) => {
         return txn.type === "earn" ? sum + txn.amount : sum - txn.amount;
       }, 0);
 
@@ -89,7 +89,7 @@ const httpTrigger = async function (context: Context, req: HttpRequest): Promise
         query: "SELECT * FROM c WHERE c.userId = @userId",
         parameters: [{ name: "@userId", value: userId }]
       }).fetchAll();
-      const currentBalance = allTxns.reduce((sum: number, txn: any) => txn.type === "earn" ? sum + txn.amount : sum - txn.amount, 0);
+      const currentBalance = allTxns.reduce((sum: number, txn: { type: string; amount: number }) => txn.type === "earn" ? sum + txn.amount : sum - txn.amount, 0);
       if (currentBalance < amount) throw new Error("Insufficient balance");
 
       const txn = {

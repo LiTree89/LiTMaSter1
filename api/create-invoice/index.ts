@@ -1,8 +1,8 @@
 import { InvocationContext, HttpRequest, HttpResponseInit } from "@azure/functions";
-// Ensure you have installed Stripe: npm install stripe @types/stripe --save
+// Ensure you have installed Google Pay integration dependencies
 // Ensure you have ../lib/keyvault implemented and exported getSecret
-import Stripe from "stripe";
-import { getSecret } from "../lib/keyvault/index";
+// import Google Pay integration here (to be added)
+// import { getSecret } from "../lib/keyvault/index";
 import { verifyRole } from "../lib/auth";
 
 export default async function httpTrigger(context: InvocationContext, req: HttpRequest): Promise<HttpResponseInit> {
@@ -34,32 +34,11 @@ export default async function httpTrigger(context: InvocationContext, req: HttpR
       recurring?: boolean;
     };
 
-    // Load Stripe secret from Key Vault
-    const stripeSecret = await getSecret("STRIPE_SECRET_KEY");
-    const stripe = new Stripe(stripeSecret, { apiVersion: "2025-12-15.clover" });
-
-    // Adaptive pricing logic
-    const finalAmount = recurring ? amount * 0.9 : amount; // 10% discount for subscriptions
-
-    // Create invoice item
-    await stripe.invoiceItems.create({
-      customer: customerId,
-      amount: Math.round(finalAmount * 100),
-      currency: "usd",
-      description,
-    });
-
-    // Create and finalize invoice
-    const invoice = await stripe.invoices.create({
-      customer: customerId,
-      auto_advance: true,
-      collection_method: recurring ? "charge_automatically" : "send_invoice",
-    });
-
-    context.log(`Invoice created for ${customerId}: ${invoice.id}`);
+    // TODO: Integrate Google Pay here
+    // Placeholder response for now
     return {
       status: 200,
-      jsonBody: { success: true, invoiceUrl: invoice.hosted_invoice_url }
+      jsonBody: { success: true, invoiceUrl: "GOOGLE_PAY_URL_PLACEHOLDER" }
     } as HttpResponseInit;
   } catch (err) {
     context.error("Invoice creation failed:", err);

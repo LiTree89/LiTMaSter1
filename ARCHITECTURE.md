@@ -3,7 +3,7 @@
 ```mermaid
 graph TD
   A[React Frontend (Vite, Tailwind)] -->|REST/SignalR| B(Azure Functions API)
-  B -->|Payments| C[Stripe, PayPal, Coinbase]
+  B -->|Payments| C[Google Pay, Coinbase]
   B -->|NFT Minting| D[Web3, Solidity, Ethers]
   B -->|Gamification| E[PlayFab, Custom Engine]
   B -->|Real-Time| F[Azure SignalR]

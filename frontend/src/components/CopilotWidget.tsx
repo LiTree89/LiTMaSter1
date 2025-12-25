@@ -6,11 +6,24 @@ export default function CopilotWidget() {
     { role: "assistant", content: "Hi! I’m your AI Copilot. Ask me anything!" }
   ]);
 
-  const send = () => {
+  const send = async () => {
     if (!input.trim()) return;
-    setMessages([...messages, { role: "user", content: input }]);
+    const userMsg = { role: "user", content: input };
+    setMessages(prev => [...prev, userMsg]);
     setInput("");
-    // TODO: Call backend copilot API and append response
+    try {
+      const res = await fetch("/api/copilot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: input })
+      });
+      const data = await res.json();
+      if (data.reply) {
+        setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
+      }
+    } catch (err) {
+      setMessages(prev => [...prev, { role: "assistant", content: "[Error: Could not reach Copilot API]" }]);
+    }
   };
 
   return (

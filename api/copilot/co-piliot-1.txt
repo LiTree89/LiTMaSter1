@@ -1,0 +1,4 @@
+kubectl --kubeconfig=path/to/kubeconfig.yaml get podsaz group create --name LiTreeLabStudioRG --location eastus
+az aks create --resource-group LiTreeLabStudioRG --name myAKSCluster --node-count 1 --enable-addons monitoring --generate-ssh-keys
+az aks list --resource-group LiTreeLabStudioRG -o table
+az aks get-credentials --resource-group LiTreeLabStudioRG --name myAKSCluster --file kubeconfig.yaml

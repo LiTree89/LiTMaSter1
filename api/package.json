@@ -15,12 +15,12 @@
     "@azure/functions": "^4.10.0",
     "@azure/identity": "^3.0.0",
     "@azure/keyvault-secrets": "^4.0.0",
-    "@types/stripe": "^8.0.416",
+    "stripe": "^12.0.0",
     "applicationinsights": "^2.3.6",
     "azure-functions-ts-essentials": "^1.3.2",
     "jsonwebtoken": "^9.0.0",
     "openai": "^4.0.0",
-    "stripe": "^20.1.0",
+    
     "uuid": "^9.0.1"
   },
   "devDependencies": {

@@ -14,7 +14,88 @@ body {
 
 .widget-header {
   cursor: move;
+  -webkit-user-select: none;
   user-select: none;
 }
 
-/* Add more wild styles as desired! */
+
+/* LiTla'StudiO New Theme: Sick Drip Edition */
+body {
+  background: linear-gradient(135deg, #1a0022 0%, #3a0ca3 40%, #f72585 100%);
+  background-attachment: fixed;
+  color: #f1f1f1;
+  font-family: 'Orbitron', 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  letter-spacing: 0.03em;
+  min-height: 100vh;
+}
+
+.widget-header {
+  background: linear-gradient(90deg, #7209b7 0%, #4361ee 100%);
+  color: #fff;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 4px 24px 0 rgba(114,9,183,0.15);
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 2px solid #f72585;
+  text-shadow: 0 2px 8px #3a0ca3;
+}
+
+.widget {
+  background: rgba(34, 34, 64, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(58,12,163,0.25);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  border: 2px solid #7209b7;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.widget:hover {
+  transform: translateY(-4px) scale(1.02) rotate(-1deg);
+  box-shadow: 0 16px 48px 0 #f72585aa;
+  border-color: #f72585;
+}
+
+.drip-btn {
+  background: linear-gradient(90deg, #f72585 0%, #7209b7 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 12px 0 #7209b7aa;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.drip-btn:hover {
+  background: linear-gradient(90deg, #7209b7 0%, #f72585 100%);
+  box-shadow: 0 4px 24px 0 #f72585aa;
+}
+
+/* Neon accent for focus */
+.widget:focus-within, .drip-btn:focus {
+  outline: 2px solid #f72585;
+  box-shadow: 0 0 0 4px #f7258577;
+}
+
+/* Custom scrollbar for extra drip */
+::-webkit-scrollbar {
+  width: 12px;
+  background: #1a0022;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #7209b7 0%, #f72585 100%);
+  border-radius: 8px;
+}
+
+/* Animated gradient border for main dashboard */
+.dashboard-drip {
+  border: 4px solid;
+  border-image: linear-gradient(90deg, #f72585, #7209b7, #4361ee, #f72585) 1;
+  animation: drip-border 4s linear infinite;
+}
+@keyframes drip-border {
+  0% { border-image-source: linear-gradient(90deg, #f72585, #7209b7, #4361ee, #f72585); }
+  100% { border-image-source: linear-gradient(270deg, #f72585, #7209b7, #4361ee, #f72585); }
+}
