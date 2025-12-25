@@ -9,6 +9,5 @@ const sdk = new NodeSDK({
 });
 
 sdk.start();
-console.log('OpenTelemetry tracing initialized for Azure Functions.');
 
 // ...existing code...

@@ -20,7 +20,7 @@ export default function ProfileWidget() {
           <source src={music} type="audio/mpeg" />
         </audio>
       )}
-      <select className="w-full p-1 rounded mt-2 text-black" value={bg} onChange={e => setBg(e.target.value)}>
+      <select className="w-full p-1 rounded mt-2 text-black" value={bg} onChange={e => setBg(e.target.value)} title="Select background style">
         <option value="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">Pink/Purple/Blue</option>
         <option value="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600">Green/Blue/Purple</option>
         <option value="bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500">Yellow/Red/Pink</option>

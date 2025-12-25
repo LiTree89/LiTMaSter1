@@ -15,7 +15,7 @@ export default function MissionsWidget() {
           <li key={i} className="flex flex-col">
             <span>{m.title} <span className="text-yellow-300">(+{m.reward} LITBIT)</span></span>
             <div className="w-full bg-gray-700 rounded h-2 mt-1">
-              <div className="bg-yellow-400 h-2 rounded" style={{ width: `${m.progress * 100}%` }}></div>
+              <div className="bg-yellow-400 h-2 rounded mission-progress-bar" data-progress={m.progress}></div>
             </div>
           </li>
         ))}

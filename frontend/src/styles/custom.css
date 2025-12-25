@@ -1,3 +1,11 @@
+/* Progress bar for MissionsWidget */
+.mission-progress-bar {
+  width: 0%;
+  transition: width 0.4s;
+}
+.mission-progress-bar[data-progress] {
+  width: calc(attr(data-progress number) * 100%);
+}
 /* MySpace-style wild customizations */
 body {
   background-image: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');

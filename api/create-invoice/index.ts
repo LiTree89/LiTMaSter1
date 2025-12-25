@@ -2,9 +2,10 @@ import { InvocationContext, HttpRequest, HttpResponseInit } from "@azure/functio
 // Ensure you have installed Stripe: npm install stripe @types/stripe --save
 // Ensure you have ../lib/keyvault implemented and exported getSecret
 import Stripe from "stripe";
-import { getSecret } from "../lib/keyvault";
+import { getSecret } from "../lib/keyvault/index";
 import { verifyRole } from "../lib/auth";
 
+export default async function httpTrigger(context: InvocationContext, req: HttpRequest): Promise<HttpResponseInit> {
   try {
     // Role-based authentication
     const userRole = req.headers.get("x-user-role") || "";
@@ -19,10 +20,10 @@ import { verifyRole } from "../lib/auth";
     const body = await req.json();
     if (
       typeof body !== "object" || body === null ||
-      typeof body.customerId !== "string" ||
-      typeof body.amount !== "number" ||
-      typeof body.description !== "string" ||
-      ("recurring" in body && typeof body.recurring !== "boolean")
+      !("customerId" in body) || typeof (body as any).customerId !== "string" ||
+      !("amount" in body) || typeof (body as any).amount !== "number" ||
+      !("description" in body) || typeof (body as any).description !== "string" ||
+      ("recurring" in body && typeof (body as any).recurring !== "boolean")
     ) {
       throw new Error("Invalid request body");
     }
@@ -35,7 +36,7 @@ import { verifyRole } from "../lib/auth";
 
     // Load Stripe secret from Key Vault
     const stripeSecret = await getSecret("STRIPE_SECRET_KEY");
-    const stripe = new Stripe(stripeSecret, { apiVersion: "2024-04-10" });
+    const stripe = new Stripe(stripeSecret, { apiVersion: "2025-12-15.clover" });
 
     // Adaptive pricing logic
     const finalAmount = recurring ? amount * 0.9 : amount; // 10% discount for subscriptions
@@ -67,5 +68,4 @@ import { verifyRole } from "../lib/auth";
       jsonBody: { error: (err as Error).message }
     } as HttpResponseInit;
   }
-}
 }
