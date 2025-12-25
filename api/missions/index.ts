@@ -4,7 +4,7 @@ import { authenticate, hasRequiredRole, Roles } from "../lib/auth";
 import { telemetryClient } from "../lib/insights";  // App Insights client from lib/insights.ts
 import { v4 as uuid } from "uuid";
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+export default async function httpTrigger(context: Context, req: HttpRequest): Promise<void> {
   try {
     // Authenticate and check roles
     const { userId, roles: userRoles } = await authenticate(req);
@@ -105,4 +105,3 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
   }
 };
 
-export default httpTrigger;

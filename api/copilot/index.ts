@@ -7,7 +7,7 @@ import { v4 as uuid } from "uuid";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+export default async function httpTrigger(context: Context, req: HttpRequest): Promise<void> {
   try {
     const { userId, roles: userRoles } = await authenticate(req);
     if (!hasRequiredRole(["user", "premium", "admin"], userRoles)) {

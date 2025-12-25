@@ -1,3 +1,7 @@
+// Role-based access helper
+export function verifyRole(userRole: string, allowedRoles: string[]): boolean {
+  return allowedRoles.includes(userRole);
+}
 
 import jwt from "jsonwebtoken";
 import { HttpRequest } from "@azure/functions";
