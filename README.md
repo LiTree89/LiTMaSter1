@@ -52,4 +52,11 @@
 
 ---
 
+## Contributors
+
+- **@LarryABol (Larry A Bol)**  
+  Project Lead & Principal Engineer
+
+---
+
 For any issues, see the Troubleshooting section in this README or contact the maintainers.
