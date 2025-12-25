@@ -10,11 +10,11 @@ param functionAppName string = 'LiTreeStudioFuncs'
 param location string = 'eastus'
 
 @description('SKU for Static Web App')
-@allowed([ 'Free' 'Standard' ])
+@allowed([ 'Free', 'Standard' ])
 param staticWebAppSku string = 'Free'
 
 @description('SKU for Function App (App Service Plan)')
-@allowed([ 'Y1' 'F1' 'S1' ])
+@allowed([ 'Y1', 'F1', 'S1' ])
 param functionAppSku string = 'Y1' // Y1 = Consumption, F1 = Free, S1 = Standard
 
 @description('Name of the App Service Plan for Function App')
@@ -54,7 +54,8 @@ param cosmosDbAccountName string = 'litreestudio-cosmos'
 param cosmosDbLocation string = location
 
 @description('Cosmos DB SKU')
-@allowed([ 'Standard' 'Basic' ])
+// Only 'Standard' is valid for databaseAccountOfferType
+@allowed([ 'Standard' ])
 param cosmosDbSku string = 'Standard'
 
 resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
@@ -62,7 +63,7 @@ resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   location: cosmosDbLocation
   kind: 'GlobalDocumentDB'
   properties: {
-    databaseAccountOfferType: cosmosDbSku
+    databaseAccountOfferType: 'Standard'
     locations: [
       {
         locationName: cosmosDbLocation
@@ -102,7 +103,7 @@ param signalRName string = 'litreestudio-signalr'
 param signalRLocation string = location
 
 @description('SignalR SKU')
-@allowed([ 'Free_F1' 'Standard_S1' ])
+@allowed([ 'Free_F1', 'Standard_S1' ])
 param signalRSku string = 'Free_F1'
 
 resource signalR 'Microsoft.SignalRService/SignalR@2022-02-01' = {

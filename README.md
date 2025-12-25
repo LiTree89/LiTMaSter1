@@ -14,7 +14,9 @@
    - `npm install` in both `api/` and `frontend/` if needed
    - `npm test` to run all tests
 
+
 ## Key Features
+
 - Dev Container for reproducible, isolated development
 - Multi-service Docker Compose (api, frontend)
 - Azure-ready: Bicep, Key Vault, Cosmos DB, SignalR, App Insights
@@ -23,20 +25,30 @@
 - NFT minting (testnet/mainnet ready)
 - Real-time, gamification, and AI integrations
 
+
+
 ## CI/CD & Deployment
+
 - Use GitHub Actions or Azure Pipelines for:
-  - Linting, tests, Docker builds
-  - Deploying to Azure (AKS, Static Web Apps, etc.)
+   - Linting, tests, Docker builds
+   - Deploying to Azure (AKS, Static Web Apps, etc.)
 - Infrastructure as Code: `deploy/main.bicep`
 - Store all secrets in Azure Key Vault
 
+
+
 ## Monitoring & Security
+
 - Application Insights, Log Analytics, and cost management enabled
 - RBAC, managed identities, and regular security scans
 
+
+
 ## Documentation
+
 - See `ARCHITECTURE.md` for a full system overview
 - See `tests/` for sample and automated test suites
+
 
 ---
 
