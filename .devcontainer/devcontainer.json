@@ -1,0 +1,30 @@
+{
+  "name": "LiTreeLabStudio Dev Container",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "api",
+  "workspaceFolder": "/workspace",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/azure-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-vscode.vscode-typescript-tslint-plugin",
+        "ms-azuretools.vscode-azurefunctions",
+        "github.copilot"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "files.autoSave": "afterDelay",
+        "editor.formatOnSave": true
+      }
+    }
+  },
+  "postCreateCommand": "npm install",
+  "remoteUser": "node"
+}
