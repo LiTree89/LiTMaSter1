@@ -3,6 +3,8 @@ import Dashboard from "./components/Dashboard";
 import NavBar from "./components/NavBar";
 import "./styles/tailwind.css";
 import "./styles/custom.css";
+import LiveStats from './components/LiveStats';
+import RuntimeStatsWidget from './components/RuntimeStatsWidget';
 
 declare global {
   interface Window {
@@ -15,6 +17,8 @@ export default function App() {
     <>
       <NavBar />
       <Dashboard />
+      <LiveStats />
+      <RuntimeStatsWidget />
     </>
   );
 }
