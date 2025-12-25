@@ -1,13 +1,17 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { cosmosClient } from "../lib/cosmos";  // Assumes lib/cosmos.ts exports CosmosClient
-import { authenticate } from "../lib/auth";  // JWT middleware from lib/auth.ts
+import { authenticate, hasRequiredRole, Roles } from "../lib/auth";
 import { telemetryClient } from "../lib/insights";  // App Insights client from lib/insights.ts
 import { v4 as uuid } from "uuid";
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
   try {
-    // Authenticate user
-    const userId = await authenticate(req);  // Throws if unauthorized
+    // Authenticate and check roles
+    const { userId, roles: userRoles } = await authenticate(req);
+    if (!hasRequiredRole(["user", "premium", "admin"], userRoles)) {
+      context.res = { status: 403, body: { error: 'Forbidden: Insufficient role' } };
+      return;
+    }
 
     const container = cosmosClient.database("litreelabdb").container("missions");
 

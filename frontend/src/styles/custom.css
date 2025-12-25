@@ -1,0 +1,12 @@
+/* MySpace-style wild customizations */
+body {
+  background-image: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+  background-color: #1a0022;
+}
+
+.widget-header {
+  cursor: move;
+  user-select: none;
+}
+
+/* Add more wild styles as desired! */

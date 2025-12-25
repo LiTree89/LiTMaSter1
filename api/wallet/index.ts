@@ -1,40 +1,30 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import { cosmosClient } from "../lib/cosmos";
-import { authenticate } from "../lib/auth";
+import { Context, HttpRequest } from "azure-functions-ts-essentials";
+import { cosmosClient } from "../lib/cosmos.ts";
+import { authenticate, hasRequiredRole, Roles } from "../lib/auth";
 import { telemetryClient } from "../lib/insights";
 import { v4 as uuid } from "uuid";
 
-const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
+const httpTrigger = async function (context: Context, req: HttpRequest): Promise<void> {
   try {
 
     // Authenticate and check roles
-    const userId = await authenticate(req);
-    // Extract roles from JWT (assume authenticate returns decoded token with roles[] or userId)
-    let userRoles: string[] = [];
-    try {
-      // If authenticate returns just userId, decode token again to get roles
-      const authHeader = req.headers?.authorization;
-      const token = authHeader?.split(' ')[1];
-      if (token) {
-        const decoded: any = require('jsonwebtoken').decode(token);
-        if (decoded && Array.isArray(decoded.roles)) userRoles = decoded.roles;
-      }
-    } catch {}
-    if (!userRoles.includes('user') && !userRoles.includes('admin')) {
+    // Type workaround: cast req as any to match expected type for authenticate
+    const { userId, roles: userRoles } = await authenticate(req as any);
+    if (!hasRequiredRole(["user", "admin"], userRoles)) {
       context.res = { status: 403, body: { error: 'Forbidden: Insufficient role' } };
       return;
     }
 
     const container = cosmosClient.database("litreelabdb").container("walletTransactions");
 
-    if (req.method === "GET" && req.url.endsWith("/balance")) {
+    if (req.method === "GET" && req.originalUrl && req.originalUrl.includes("/balance")) {
       // Compute balance from ledger (read-only, no idempotency needed)
       const { resources } = await container.items.query({
         query: "SELECT * FROM c WHERE c.userId = @userId",
         parameters: [{ name: "@userId", value: userId }]
       }).fetchAll();
 
-      const balance = resources.reduce((sum, txn) => {
+      const balance = resources.reduce((sum: number, txn: any) => {
         return txn.type === "earn" ? sum + txn.amount : sum - txn.amount;
       }, 0);
 
@@ -43,9 +33,11 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
       return;
     }
 
-    if (req.method === "POST" && req.url.endsWith("/earn")) {
+    if (req.method === "POST" && req.originalUrl && req.originalUrl.includes("/earn")) {
       // Earn transaction (idempotent: source-based check)
-      const { amount, source } = req.body;
+      let body = req.body;
+      if (typeof body === 'string') body = JSON.parse(body);
+      const { amount, source } = body || {};
       if (!amount || !source) throw new Error("Missing amount or source");
 
       // Check if transaction already exists for this source
@@ -74,9 +66,11 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
       return;
     }
 
-    if (req.method === "POST" && req.url.endsWith("/spend")) {
+    if (req.method === "POST" && req.originalUrl && req.originalUrl.includes("/spend")) {
       // Spend transaction (idempotent: similar source check, plus balance validation)
-      const { amount, source } = req.body;
+      let body = req.body;
+      if (typeof body === 'string') body = JSON.parse(body);
+      const { amount, source } = body || {};
       if (!amount || !source) throw new Error("Missing amount or source");
 
       // Idempotency check
@@ -95,7 +89,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
         query: "SELECT * FROM c WHERE c.userId = @userId",
         parameters: [{ name: "@userId", value: userId }]
       }).fetchAll();
-      const currentBalance = allTxns.reduce((sum, txn) => txn.type === "earn" ? sum + txn.amount : sum - txn.amount, 0);
+      const currentBalance = allTxns.reduce((sum: number, txn: any) => txn.type === "earn" ? sum + txn.amount : sum - txn.amount, 0);
       if (currentBalance < amount) throw new Error("Insufficient balance");
 
       const txn = {
@@ -116,8 +110,8 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     context.res = { status: 405, body: "Method not allowed" };
   } catch (err) {
     const error = err as Error;
-    context.log.error(`Wallet Error: ${error.message}`);
-    telemetryClient.trackException({ exception: error, properties: { userId: req.headers['x-user-id'] } });
+    if (context.log) context.log.error(`Wallet Error: ${error.message}`);
+    telemetryClient.trackException({ exception: error, properties: { userId: req.headers?.["x-user-id"] || "unknown" } });
     context.res = { status: 500, body: `Error: ${error.message}` };
   }
 };

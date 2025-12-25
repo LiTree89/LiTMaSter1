@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { cosmosClient } from "../lib/cosmos";
-import { authenticate } from "../lib/auth";
+import { authenticate, hasRequiredRole, Roles } from "../lib/auth";
 import { telemetryClient } from "../lib/insights";
 import OpenAI from "openai";
 import { v4 as uuid } from "uuid";
@@ -9,7 +9,11 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
   try {
-    const userId = await authenticate(req);
+    const { userId, roles: userRoles } = await authenticate(req);
+    if (!hasRequiredRole(["user", "premium", "admin"], userRoles)) {
+      context.res = { status: 403, body: { error: 'Forbidden: Insufficient role' } };
+      return;
+    }
 
     const container = cosmosClient.database("litreelabdb").container("copilotThreads");
 
