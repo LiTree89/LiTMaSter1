@@ -59,4 +59,14 @@
 
 ---
 
+## Personal Portals
+
+This project supports custom personal portals for different user types:
+- **Admin Portal:** `frontend/src/portals/AdminPortal.tsx`
+- **User Portal:** `frontend/src/portals/UserPortal.tsx`
+
+You can expand these portals with widgets, dashboards, and custom features for each user role.
+
+---
+
 For any issues, see the Troubleshooting section in this README or contact the maintainers.
