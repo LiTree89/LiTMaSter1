@@ -1,4 +1,46 @@
 {
+  "name": "Crypto Dashboard Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-20-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "nodeGypDependencies": true },
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/devcontainers/features/python:1": {},
+    "ghcr.io/nullcoder/devcontainer-features/stripe-cli:1": {},
+    "ghcr.io/jsburckhardt/devcontainer-features/gitleaks:1": {},
+    "ghcr.io/dhoeric/features/trivy:1": {},
+    "ghcr.io/devcontainers-extra/features/truffle:1": {}
+  },
+  "postCreateCommand": "npm install -g yarn pnpm && cd api && npm install && cd ../frontend && npm install && az login --use-device-code",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "dsznajder.es7-react-js-snippets",
+        "eamodio.gitlens",
+        "bradlc.vscode-tailwindcss",
+        "ms-azuretools.vscode-cosmosdb",
+        "ms-vscode.vscode-node-azure-pack",
+        "ms-azuretools.vscode-azuredatabases",
+        "ms-azuretools.vscode-docker",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "JuanBlanco.solidity",
+        "tintinweb.solidity-visual-auditor",
+        "humao.rest-client",
+        "VisualStudioExptTeam.vscodeintellicode"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 8080, 443],
+  "portsAttributes": {
+    "3000": { "label": "Frontend", "onAutoForward": "notify" }
+  },
+  "runArgs": ["--cpus=4", "--memory=8g"]
+}{
   "name": "LiTreeLabStudio Dev Container",
   "build": {
     "dockerfile": "Dockerfile"
