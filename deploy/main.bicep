@@ -53,10 +53,6 @@ param cosmosDbAccountName string = 'litreestudio-cosmos'
 @description('Location for Cosmos DB')
 param cosmosDbLocation string = location
 
-@description('Cosmos DB SKU')
-// Only 'Standard' is valid for databaseAccountOfferType
-@allowed([ 'Standard' ])
-param cosmosDbSku string = 'Standard'
 
 resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   name: cosmosDbAccountName
