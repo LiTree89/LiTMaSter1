@@ -1,0 +1,9 @@
+{
+    "chat.mcp.serverSampling": {
+        "azuredev-009a/.vscode/mcp.json: github": {
+            "allowedModels": [
+                "copilot/gpt-4.1"
+            ]
+        }
+    }
+}
